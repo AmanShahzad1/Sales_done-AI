@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FiLogIn, FiMail, FiLock, FiHome } from 'react-icons/fi';
+import { FiLogIn, FiMail, FiLock, FiHome, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import { loginUser, generateOTP, verifyOTP } from '../../../api/auth';
 import OTPModal from '../../components/OTPModal';
@@ -9,6 +9,7 @@ import OTPModal from '../../components/OTPModal';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showOTPModal, setShowOTPModal] = useState(false);
@@ -21,10 +22,7 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // First verify credentials
       const { token } = await loginUser({ email, password });
-      
-      // Store temp token and show OTP modal
       setTempToken(token);
       await generateOTP(email);
       setShowOTPModal(true);
@@ -63,15 +61,13 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Login Card */}
         <div className="bg-white/90 backdrop-blur-sm py-8 px-6 shadow-xl sm:rounded-2xl sm:px-10 border border-blue-100/50 transition-all duration-300 hover:shadow-2xl">
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md text-sm">
               {error}
             </div>
           )}
-          
-          {/* Show either the login form or OTP modal */}
+
           {showOTPModal ? (
             <OTPModal
               email={email}
@@ -104,7 +100,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Password Field */}
+              {/* Password Field with Eye Icon */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                   Password
@@ -116,14 +112,20 @@ export default function LoginPage() {
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     placeholder="••••••••"
                   />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FiEyeOff className="h-5 w-5 text-gray-400" /> : <FiEye className="h-5 w-5 text-gray-400" />}
+                  </div>
                 </div>
               </div>
 
@@ -161,7 +163,11 @@ export default function LoginPage() {
                   }`}
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <FiLogIn className={`h-5 w-5 ${isLoading ? 'text-blue-300' : 'text-blue-200 group-hover:text-blue-100'} transition-colors`} />
+                  <FiLogIn
+                      className={`h-5 w-5 ${
+                        isLoading ? 'text-blue-300' : 'text-blue-200 group-hover:text-blue-100'
+                      } transition-colors`}
+                    />
                   </span>
                   {isLoading ? 'Signing in...' : 'Sign in'}
                 </button>
@@ -169,7 +175,6 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Back to Home Link - Only show when not in OTP modal */}
           {!showOTPModal && (
             <div className="mt-6">
               <div className="relative">
@@ -191,6 +196,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-    //check
   );
 }
