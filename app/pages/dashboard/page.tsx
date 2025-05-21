@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { useRouter } from 'next/navigation';
+import ProtectedRoute from '../RouteProtected/RouteProtected';
 
 const pieData = [
   { name: 'SMS', value: 45 },
@@ -22,8 +24,9 @@ function getClientInfo() {
 
 export default function DashboardPage() {
   const [client, setClient] = useState<{ clientId: string; clientName: string } | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
+
     // In real use: fetch from Supabase session/user metadata
     setClient(getClientInfo());
   }, []);
@@ -39,7 +42,17 @@ export default function DashboardPage() {
 
   const bgClass = environmentStyles[client.clientId] || 'bg-gray-100';
 
+  const handleLogout = () => {
+    // Clear local storage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
+    
+    // Redirect to login page
+    router.push('/pages/login');
+  };
+
   return (
+    <ProtectedRoute>
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-blue-900 text-white p-6 space-y-6">
@@ -50,7 +63,16 @@ export default function DashboardPage() {
           <a href="#" className="block hover:text-gray-200">Agents</a>
           <a href="#" className="block hover:text-gray-200">Inbox</a>
           <a href="#" className="block hover:text-gray-200">Settings</a>
+
+          <button 
+            onClick={handleLogout}
+            className="block w-full text-left hover:text-gray-200 mt-8 pt-4 border-t border-blue-800"
+          >
+            Logout
+          </button>
         </nav>
+
+
       </aside>
 
       {/* Main Dashboard */}
@@ -165,5 +187,6 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
+    </ProtectedRoute>
   );
 }
