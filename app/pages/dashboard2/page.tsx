@@ -15,8 +15,8 @@ const pieColors = ['#1e3a8a', '#3b82f6', '#93c5fd'];
 function getClientInfo() {
   // Simulate different environments: 'parenta', 'chameleon', 'saas'
   return {
-    clientId: 'Saas',
-    clientName: 'Saas Training',
+    clientId: 'parenta-group',
+    clientName: 'parenta-group',
   };
 }
 

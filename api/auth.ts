@@ -30,6 +30,23 @@ export const loginUser = async (credentials: { email: string; password: string }
 };
 
 
+export const fetchClientData = async (clientName: string) => {
+  const response = await fetch(`${API_URL}/api/client_data/${clientName}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',  // This is crucial for cookies if needed
+    mode: 'cors'  // Explicitly enable CORS mode
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to fetch client data');
+  }
+
+  return response.json();
+};
 
 // Define token payload type
 interface TokenPayload {
