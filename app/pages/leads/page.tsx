@@ -5,7 +5,6 @@ import {
   FiSearch,
   FiFilter,
   FiDownload,
-  FiPlus,
   FiEdit,
   FiTrash2,
   FiChevronLeft,
@@ -32,21 +31,7 @@ export default function LeadsPage() {
   ]);
 
   // Add Lead example
-  const addLead = () => {
-    const nextId = (parseInt(leads[leads.length - 1]?.id || '0') + 1).toString();
-    setLeads([
-      ...leads,
-      {
-        id: nextId,
-        name: 'New Lead',
-        email: 'new@example.com',
-        phone: '+44 7000 000000',
-        source: 'Organic',
-        status: 'new',
-        lastContact: new Date().toISOString().slice(0, 10),
-      },
-    ]);
-  };
+  
 
   // Delete Lead
   const deleteLead = (id: string) => {
@@ -84,13 +69,13 @@ export default function LeadsPage() {
                 <h1 className="text-2xl font-bold text-gray-800">Lead Management</h1>
                 <p className="text-gray-600">Track and manage all incoming leads</p>
               </div>
-              <button
+              {/* <button
                 className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center"
                 onClick={addLead}
               >
                 <FiPlus className="mr-2" />
                 Add Lead
-              </button>
+              </button> */}
             </header>
 
             {/* Filters */}

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { FiUser, FiMail, FiPhone, FiGlobe, FiSave } from 'react-icons/fi';
+import { FiUser, FiMail, FiPhone, FiGlobe } from 'react-icons/fi';
 import ProtectedRoute from '../RouteProtected/RouteProtected';
 
 // Define allowed tab ids
@@ -155,10 +155,10 @@ export default function SettingsPage() {
                   </div>
                   
                   <div className="flex justify-end pt-4">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg flex items-center">
+                    {/* <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg flex items-center">
                       <FiSave className="mr-2" />
                       Save Changes
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>

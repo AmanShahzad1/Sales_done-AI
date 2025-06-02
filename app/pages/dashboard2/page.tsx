@@ -1,7 +1,8 @@
+// app/pages/dashboard2/page.tsx (Parenta)
 'use client';
-
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import ProtectedRoute from '../RouteProtected/RouteProtected';
 
 const pieData = [
   { name: 'SMS', value: 45 },
@@ -9,14 +10,12 @@ const pieData = [
   { name: 'WhatsApp', value: 30 },
 ];
 
-const pieColors = ['#1e3a8a', '#3b82f6', '#93c5fd'];
+const pieColors = ['#0d9488', '#14b8a6', '#2dd4bf'];
 
-// Mock function (replace this with Supabase session/user fetch)
 function getClientInfo() {
-  // Simulate different environments: 'parenta', 'chameleon', 'saas'
   return {
     clientId: 'parenta-group',
-    clientName: 'parenta-group',
+    clientName: 'Parenta Group',
   };
 }
 
@@ -24,146 +23,172 @@ export default function DashboardPage() {
   const [client, setClient] = useState<{ clientId: string; clientName: string } | null>(null);
 
   useEffect(() => {
-    // In real use: fetch from Supabase session/user metadata
     setClient(getClientInfo());
   }, []);
 
   if (!client) return <div className="p-6 text-gray-600">Loading dashboard...</div>;
 
-  const greeting = `Hey ${client.clientName?.split(' ')[0]}!`;
-  const environmentStyles: Record<string, string> = {
-    parenta: 'bg-pink-100',
-    chameleon: 'bg-green-100',
-    saas: 'bg-indigo-100',
-  };
-
-  const bgClass = environmentStyles[client.clientId] || 'bg-gray-100';
+  const username = client.clientName.split(' ')[0];
+  const greeting = `Hey ${username}!`;
 
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-blue-900 text-white p-6 space-y-6">
-        <h2 className="text-2xl font-bold">Salesdone AI</h2>
-        <nav className="space-y-4 text-sm">
-          <a href="/pages/dashboard" className="block hover:text-gray-200">Dashboard</a>
-          <a href="/pages/leads" className="block hover:text-gray-200">Leads</a>
-          <a href="/pages/agents" className="block hover:text-gray-200">Agents</a>
-          <a href="/pages/inbox" className="block hover:text-gray-200">Inbox</a>
-          <a href="/pages/settings" className="block hover:text-gray-200">Settings</a>
-        </nav>
-      </aside>
+    <ProtectedRoute>
+      <div className="flex min-h-screen">
+        {/* Sidebar */}
+        <aside className="w-64 bg-teal-800 text-white p-6 space-y-6">
+          <h2 className="text-2xl font-bold flex items-center">
+            <span className="bg-teal-700 px-2 py-1 rounded mr-2">PG</span>
+            Parenta Group
+          </h2>
+          <nav className="space-y-4 text-sm">
+            <a href="/pages/dashboard2" className="block hover:text-teal-200 font-medium">Dashboard</a>
+            {/* <a href="#" className="block hover:text-teal-200">Software Demos</a>
+            <a href="#" className="block hover:text-teal-200">Nursery Leads</a>
+            <a href="#" className="block hover:text-teal-200">CRM Analytics</a>
+            <a href="#" className="block hover:text-teal-200">Settings</a> */}
+          </nav>
+        </aside>
 
-      {/* Main Dashboard */}
-      <main className={`flex-1 ${bgClass} p-6`}>
-        <header className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">{greeting} — Welcome to your Sales Dashboard</h1>
-          <div className="w-8 h-8 bg-gray-300 rounded-full" />
-        </header>
-
-        {/* Stats Summary */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {[
-            { label: 'Total Leads', value: 1200 },
-            { label: 'Active Agents', value: 15 },
-            { label: 'Bookings Today', value: 32 },
-            { label: 'API Requests', value: '9,875' },
-          ].map((item, idx) => (
-            <div key={idx} className="bg-white rounded-xl shadow p-4 text-center">
-              <div className="text-sm text-gray-500">{item.label}</div>
-              <div className="text-xl font-semibold mt-1">{item.value}</div>
+        {/* Main Dashboard */}
+        <main className="flex-1 bg-gradient-to-br from-teal-50 to-cyan-50 p-6">
+          <header className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800">{greeting}</h1>
+              <p className="text-gray-600">Nursery Software Solutions Dashboard</p>
             </div>
-          ))}
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="font-semibold mb-2">Booking Trend</h2>
-            <div className="h-40 bg-gray-100 rounded flex items-center justify-center text-gray-500">
-              {/* Placeholder - integrate Chart.js or Recharts */}
-              Chart Coming Soon
+            <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold">
+              {username.charAt(0).toUpperCase()}
             </div>
-          </div>
-          <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="font-semibold mb-2">Channel Distribution</h2>
-            <ResponsiveContainer width="100%" height={180}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={60}
-                  fill="#8884d8"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+          </header>
 
-        {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow p-4 mb-6">
-          <h2 className="font-semibold mb-3">Recent Activity</h2>
-          <ul className="space-y-2 text-sm text-gray-700">
-            <li className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />
-              New AI agent deployed for booking conversion
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 bg-blue-500 rounded-full" />
-              30 new leads added via Meta campaign
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full" />
-              Twilio fallback triggers handled via n8n
-            </li>
-          </ul>
-        </div>
+          {/* Stats Summary */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {[
+              { label: 'Demo Requests', value: 42, icon: '📱' },
+              { label: 'Demos Booked', value: 28, icon: '📅' },
+              { label: 'New Nurseries', value: 9, icon: '🏫' },
+              { label: 'CRM Signups', value: 15, icon: '📝' },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white rounded-xl shadow p-4 flex items-start">
+                <span className="text-2xl mr-3">{item.icon}</span>
+                <div>
+                  <div className="text-sm text-gray-500">{item.label}</div>
+                  <div className="text-xl font-semibold mt-1">{item.value}</div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-        {/* Agent Table */}
-        <div className="bg-white rounded-xl shadow p-4">
-          <h2 className="font-semibold mb-3">Agent Performance</h2>
-          <table className="w-full text-sm text-left">
-            <thead>
-              <tr className="text-gray-500 border-b">
-                <th className="py-2">Agent</th>
-                <th>Channel</th>
-                <th>Leads Contacted</th>
-                <th>Bookings</th>
-                <th>Response Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[{
-                name: 'Qualification Bot',
-                channel: 'SMS',
-                leads: 100,
-                bookings: 20,
-                rate: '68%',
-              }, {
-                name: 'Booking Assistant',
-                channel: 'Email',
-                leads: 80,
-                bookings: 12,
-                rate: '52%',
-              }].map((agent, idx) => (
-                <tr key={idx} className="border-b last:border-none">
-                  <td className="py-2">{agent.name}</td>
-                  <td>{agent.channel}</td>
-                  <td>{agent.leads}</td>
-                  <td>{agent.bookings}</td>
-                  <td>{agent.rate}</td>
-                </tr>
+          {/* Demo Status */}
+          <div className="bg-white rounded-xl shadow p-4 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-semibold">Software Demo Pipeline</h2>
+              <button className="text-sm text-teal-600 hover:text-teal-800">
+                View All →
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-4 text-center">
+              {[
+                { stage: 'Requested', count: 42, color: 'bg-gray-200' },
+                { stage: 'Scheduled', count: 28, color: 'bg-amber-200' },
+                { stage: 'Completed', count: 18, color: 'bg-blue-200' },
+                { stage: 'Converted', count: 9, color: 'bg-green-200' },
+              ].map((stage, idx) => (
+                <div key={idx} className="p-3 border border-gray-100 rounded-lg">
+                  <div className="text-lg font-bold">{stage.count}</div>
+                  <div className="text-sm text-gray-500 mt-1">{stage.stage}</div>
+                  <div className={`${stage.color} h-2 w-full rounded-full mt-2`}></div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+            </div>
+          </div>
+
+          {/* Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            <div className="bg-white rounded-xl shadow p-4">
+              <h2 className="font-semibold mb-2">Demo Conversion Rate</h2>
+              <div className="h-60 bg-gradient-to-r from-teal-50 to-cyan-50 rounded flex flex-col items-center justify-center text-center p-4">
+                <div className="text-5xl font-bold text-teal-700 mb-2">64%</div>
+                <p className="text-gray-600">of scheduled demos completed</p>
+                <div className="mt-4 w-full max-w-xs">
+                  <div className="flex justify-between text-sm text-gray-500 mb-1">
+                    <span>Last week: 58%</span>
+                    <span>+6%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-teal-600 h-2 rounded-full" 
+                      style={{ width: '64%' }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow p-4">
+              <h2 className="font-semibold mb-2">Lead Sources</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Recent Demos */}
+          <div className="bg-white rounded-xl shadow p-4">
+            <h2 className="font-semibold mb-3">Recent Demo Requests</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead>
+                  <tr className="text-gray-500 border-b">
+                    <th className="py-3">Nursery</th>
+                    <th>Contact</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { nursery: 'Little Stars', contact: 'Sarah Johnson', location: 'London', date: 'Jun 15', status: 'Scheduled' },
+                    { nursery: 'Tiny Treasures', contact: 'Michael Chen', location: 'Manchester', date: 'Jun 14', status: 'Completed' },
+                    { nursery: 'Sunshine Kids', contact: 'Emma Wilson', location: 'Birmingham', date: 'Jun 12', status: 'Converted' },
+                  ].map((demo, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="py-3 font-medium">{demo.nursery}</td>
+                      <td>{demo.contact}</td>
+                      <td>{demo.location}</td>
+                      <td>{demo.date}</td>
+                      <td>
+                        <span className={`px-2 py-1 rounded text-xs ${
+                          demo.status === 'Scheduled' ? 'bg-amber-100 text-amber-800' :
+                          demo.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          {demo.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </ProtectedRoute>
   );
 }

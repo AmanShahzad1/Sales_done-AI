@@ -1,7 +1,7 @@
 // app/pages/agents/page.tsx
 'use client';
 import { useState } from 'react';
-import { FiPlus, FiEdit, FiTrash2, FiActivity, FiToggleLeft, FiToggleRight } from 'react-icons/fi';
+import {FiEdit, FiTrash2, FiActivity, FiToggleLeft, FiToggleRight } from 'react-icons/fi';
 import ProtectedRoute from '../RouteProtected/RouteProtected';
 
 interface Agent {
@@ -52,10 +52,10 @@ export default function AgentsPage() {
                 <h1 className="text-2xl font-bold text-gray-800">AI Agents</h1>
                 <p className="text-gray-600">Manage your automated sales agents</p>
               </div>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center">
+              {/* <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center">
                 <FiPlus className="mr-2" />
                 Create Agent
-              </button>
+              </button> */}
             </header>
 
             {/* Agent Cards */}
@@ -146,9 +146,9 @@ export default function AgentsPage() {
                 </div>
                 
                 <div className="md:col-span-2 flex justify-end">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg">
+                  {/* <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg">
                     Save Agent Configuration
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
