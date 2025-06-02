@@ -25,8 +25,14 @@ export default function LoginPage() {
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(user));
     
-    // Redirect to dashboard
-    router.push('/pages/dashboard');
+    // Redirect based on email pattern
+    if (email.endsWith('@primeria.global')) {
+      router.push('/pages/dashboard1');
+    } else if (email.endsWith('@parenta.com')) {
+      router.push('/pages/dashboard2');
+    } else {
+      router.push('/pages/dashboard'); // Default fallback
+    }
   } catch (err) {
     setError(
       err instanceof Error 
@@ -39,6 +45,8 @@ export default function LoginPage() {
     setIsLoading(false);
   }
 };
+  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">

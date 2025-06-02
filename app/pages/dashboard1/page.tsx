@@ -45,11 +45,11 @@ export default function DashboardPage() {
       <aside className="w-64 bg-blue-900 text-white p-6 space-y-6">
         <h2 className="text-2xl font-bold">Salesdone AI</h2>
         <nav className="space-y-4 text-sm">
-          <a href="#" className="block hover:text-gray-200">Dashboard</a>
-          <a href="#" className="block hover:text-gray-200">Leads</a>
-          <a href="#" className="block hover:text-gray-200">Agents</a>
-          <a href="#" className="block hover:text-gray-200">Inbox</a>
-          <a href="#" className="block hover:text-gray-200">Settings</a>
+            <a href="/pages/dashboard" className="block hover:text-gray-200">Dashboard</a>
+            <a href="/pages/leads" className="block hover:text-gray-200">Leads</a>
+            <a href="/pages/agents" className="block hover:text-gray-200">Agents</a>
+            <a href="/pages/inbox" className="block hover:text-gray-200">Inbox</a>
+            <a href="/pages/settings" className="block hover:text-gray-200">Settings</a>
         </nav>
       </aside>
 

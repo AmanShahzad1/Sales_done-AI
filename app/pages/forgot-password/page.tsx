@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
               </div>
               
               <p className="mt-6 text-sm text-gray-500">
-                We'll verify your identity and help you regain access to your account.
+                We&apos;ll verify your identity and help you regain access to your account.
               </p>
             </div>
 
